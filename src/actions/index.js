@@ -14,13 +14,13 @@ const fetchSubredditImages = (subreddit="aww", cb) => {
         json.data.children.map(child => child.data)
     )
     .then(posts => 
-        posts.filter(post => post.post_hint==="image")
+        posts.filter(post => post.post_hint==="image" || post.post_hint==="link")
     )
     .then(image_posts => 
-        image_posts.map(post => post.url)
+        image_posts.map(post => ({ url : post.url, hint : post.post_hint}))
     )
-    .then(urls =>
-        cb(urls)
+    .then(image_data =>
+        cb(image_data)
     )
 }
 

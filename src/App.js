@@ -20,7 +20,7 @@ class App extends Component {
         this.updateImages = this.updateImages.bind(this)
         fetchSubredditImages("earthporn", this.updateImages)
     }
-    
+
     updateImages(images) {
         this.setState({images})
     }

@@ -35,27 +35,32 @@ const makeGif = (url) => {
     return url
 }
 
-const Gallery = ({images, cols=3}) => {
-    let pics = images.filter(image => image.hint === "image")
-    let gifs = images.filter(image => image.hint === "link")
+const Gallery = ({posts, cols=3}) => {
+    let pics = posts.filter(image => image.hint === "image")
+    let gifs = posts.filter(image => image.hint === "link")
 
     let totalRows = calculateTotalRows(pics.length, cols)
     
     if (totalRows === 0)
         return <p>No Images Available</p>
     
-    let imagesBlocks = pics.map(image => <Grid.Row>{makeImage(image.url)}</Grid.Row>)
+    let imageItems = pics.map(image => <Grid.Row>{makeImage(image.url)}</Grid.Row>)
 
-    let imagesGrid = imagesBlocks.reduce((rows, key, index) => (index % totalRows == 0 ? rows.push([key]) 
-                                                                : rows[rows.length-1].push(key)) && rows, []);
+    let imagesGrid = imageItems.reduce((cols, key, index) => (index % totalRows == 0 ? cols.push([key]) 
+                                                                : cols[cols.length-1].push(key)) && cols, []);
    
-    let imagesRows = imagesGrid.map((row) => <Grid.Column>{row}</Grid.Column>)
+    let imagesCols = imagesGrid.map((row) => <Grid.Column>{row}</Grid.Column>)
     // let gifRows = gifs.map(gif => <Grid.Row>{makeGif(gif.url)}</Grid.Row>)
     
-    return <Grid rows={totalRows} columns={cols}>
-        {imagesRows}
+    return <Grid columns={cols} stackable>
+        {imagesCols}
         {/* {gifRows} */}
     </Grid>
+}
+
+Gallery.propTypes = {
+    posts : PropTypes.object.isRequired,
+    cols : PropTypes.number
 }
 
 export default Gallery

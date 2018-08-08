@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Grid, Image } from 'semantic-ui-react'
+import { Grid, Image, Container } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 
 const calculateTotalRows = (length, cols) => {
@@ -52,10 +52,13 @@ const Gallery = ({posts, cols=3}) => {
     let imagesCols = imagesGrid.map((row) => <Grid.Column>{row}</Grid.Column>)
     // let gifRows = gifs.map(gif => <Grid.Row>{makeGif(gif.url)}</Grid.Row>)
     
-    return <Grid columns={cols} stackable>
-        {imagesCols}
-        {/* {gifRows} */}
-    </Grid>
+    return <div class="gallery-container">
+        <Container fluid>
+        <Grid columns={cols} stackable>
+            {imagesCols}
+            {/* {gifRows} */}
+        </Grid>
+    </Container></div>
 }
 
 Gallery.propTypes = {

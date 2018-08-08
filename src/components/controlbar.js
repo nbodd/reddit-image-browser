@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Grid, Input, Button, Container, Form } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
+import '../css/index.css'
 
 class ControlBar extends React.Component {
 
@@ -17,21 +18,18 @@ class ControlBar extends React.Component {
     }
 
     handleFetch = () => {
-        console.log('fetch click')
         this.props.onFetch(this.state.subreddit)
     }
 
     handleRefresh = () => {
-        console.log("refresh click")
         this.props.onRefresh(this.state.subreddit)
     }
 
     handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
     render() {
-        let {onFetch, onRefresh} = this.props
         let {subreddit} = this.state
-        return <Container>
+        return <Container className="control-bar-container">
             <Form onSubmit={this.handleFetch}>
             <Grid stackable fluid columns={3}>
                 <Grid.Column width={8}>

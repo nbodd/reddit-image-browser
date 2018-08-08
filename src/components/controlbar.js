@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Grid, Input, Button, Container } from 'semantic-ui-react'
+import { Grid, Input, Button, Container, Form } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 
 class ControlBar extends React.Component {
@@ -9,37 +9,42 @@ class ControlBar extends React.Component {
         super(props)
         this.handleFetch.bind(this)
         this.handleRefresh.bind(this)
+        this.handleChange.bind(this)
 
         this.state = {
-            input : ""
+            subreddit : ""
         }
     }
 
     handleFetch = () => {
         console.log('fetch click')
-        this.props.onFetch(this.state.input)
+        this.props.onFetch(this.state.subreddit)
     }
 
     handleRefresh = () => {
         console.log("refresh click")
-        this.props.onRefresh(this.state.input)
+        this.props.onRefresh(this.state.subreddit)
     }
+
+    handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
     render() {
         let {onFetch, onRefresh} = this.props
-
+        let {subreddit} = this.state
         return <Container>
+            <Form onSubmit={this.handleFetch}>
             <Grid stackable fluid columns={3}>
                 <Grid.Column width={8}>
-                    <Input fluid placeholder='r/aww' onChange={e => this.setState({ input : e.target.value })} />
+                    <Form.Input name="subreddit" value={subreddit} fluid placeholder='r/aww' onChange={this.handleChange} />
                 </Grid.Column>
                 <Grid.Column width={4}>
-                    <Button fluid primary onClick={this.handleFetch}>Fetch</Button>
+                    <Form.Button fluid primary  content="submit">Fetch</Form.Button>
                 </Grid.Column>
                 <Grid.Column width={4}>
                     <Button fluid secondary onClick={this.handleRefresh}>Refresh</Button>
                 </Grid.Column>
             </Grid>
+            </Form>
         </Container>
     }
 }

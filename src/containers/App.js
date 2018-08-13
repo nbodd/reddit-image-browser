@@ -5,6 +5,7 @@ import 'semantic-ui-css/semantic.min.css';
 
 import ControlBar from './controlbar'
 import Gallery from './gallery'
+import BottomControlBar from '../components/bottomcontrolbar'
 
 import fetchSubredditImages from '../actions'
 
@@ -14,6 +15,7 @@ class App extends Component {
             <Container fluid>
                 <ControlBar />
                 <Gallery />
+                <BottomControlBar />
             </Container>
         );
     }

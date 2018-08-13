@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Grid, Input, Button, Container, Form } from 'semantic-ui-react'
+import { Grid, Button, Container, Form } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 import '../css/index.css'
 
@@ -18,7 +18,13 @@ class ControlBar extends React.Component {
     }
 
     handleFetch = () => {
-        this.props.onFetch(this.state.subreddit)
+        let sub = this.state.subreddit
+        sub = sub.trim()
+        if (sub.startsWith("r/")) {
+            sub = sub.replace("r/", "")
+        }
+
+        this.props.onFetch(sub)
     }
 
     handleRefresh = () => {

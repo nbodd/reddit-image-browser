@@ -42,7 +42,7 @@ const Gallery = ({posts, cols=3}) => {
     let totalRows = calculateTotalRows(pics.length, cols)
     
     if (totalRows === 0)
-        return <p>No Images Available</p>
+        return <Container textAlign='center' className='gallery-container'>No Images Available</Container>
     
     let imageItems = pics.map(image => <Grid.Row>{makeImage(image.url)}</Grid.Row>)
 

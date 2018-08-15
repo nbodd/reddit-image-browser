@@ -4,8 +4,14 @@ import { Container, Button } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 import '../css/index.css'
 
-const bar = ({}) => (
-    <Container textAlign='center' className='bottom-control-bar-container'><Button primary>Fetch More Images</Button></Container>
+const BottomControlBar = ({onFetch}) => (
+    <Container textAlign='center' className='bottom-control-bar-container'>
+        <Button primary /* onClick={onFetch()} */>Fetch More Images</Button>
+    </Container>
 )
 
-export default bar
+BottomControlBar.propTypes = {
+    onFetch : PropTypes.func.isRequired,
+}
+
+export default BottomControlBar

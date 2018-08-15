@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import ControlBar from '../components/controlbar'
+import ControlBar from '../components/topcontrolbar'
 import { fetchSubredditImages } from '../actions';
 
 const mapPropsToDispatch = (dispatch) => ({

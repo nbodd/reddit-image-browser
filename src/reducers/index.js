@@ -23,8 +23,9 @@ function subredditdata(state={
             return {
                         ...state,
                         [action.subreddit] : {
-                            posts : action.posts
-                        }
+                            posts : action.posts,
+                            last : action.last
+                        },
                     }
         }
     }

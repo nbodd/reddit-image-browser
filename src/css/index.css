@@ -12,6 +12,6 @@ body {
     padding: 5% 5%;
 }
 
-/* .bottom-control-bar-container {
-    padding-top : 3%;
-} */
+.bottom-control-bar-container {
+    padding-bottom : 3%;
+}

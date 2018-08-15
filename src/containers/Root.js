@@ -21,7 +21,6 @@ let initialState = {
 
 const store = createStore(
   rootReducer,
-  initialState,
   applyMiddleware(
     thunkMiddleware, // lets us dispatch() functions
     loggerMiddleware // neat middleware that logs actions

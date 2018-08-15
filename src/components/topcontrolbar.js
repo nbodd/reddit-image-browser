@@ -39,7 +39,17 @@ class ControlBar extends React.Component {
             <Form onSubmit={this.handleFetch}>
             <Grid stackable fluid columns={3}>
                 <Grid.Column width={8}>
-                    <Form.Input name="subreddit" value={subreddit} fluid placeholder='r/aww' onChange={this.handleChange} />
+                    <Form.Input name="subreddit" value={subreddit} fluid placeholder='aww' onChange={this.handleChange} list='prefsubs'/>
+                    <datalist id="prefsubs">
+                        <option value='aww' />
+                        <option value='earthporn' />
+                        <option value='historyinpics' />
+                        <option value='historyporn' />
+                        <option value='hdpics' />
+                        <option value='images' />
+                        <option value='dogs' />
+                        <option value='cats' />
+                    </datalist>
                 </Grid.Column>
                 <Grid.Column width={4}>
                     <Form.Button fluid primary  content="submit">Fetch</Form.Button>

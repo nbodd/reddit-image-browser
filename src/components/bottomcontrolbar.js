@@ -6,7 +6,8 @@ import '../css/index.css'
 
 const BottomControlBar = ({onFetch}) => (
     <Container textAlign='center' className='bottom-control-bar-container'>
-        <Button primary /* onClick={onFetch()} */>Fetch More Images</Button>
+        <Button primary onClick={(e) => onFetch()}>Fetch More Images</Button>
+        <Button secondary onClick={(e) => window.scrollTo(0, 0)}>Back To Top</Button>
     </Container>
 )
 

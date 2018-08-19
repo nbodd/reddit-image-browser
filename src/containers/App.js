@@ -5,14 +5,14 @@ import 'semantic-ui-css/semantic.min.css';
 
 import ControlBar from './topcontrolbar'
 import Gallery from './gallery'
-import BottomControlBar from '../components/bottomcontrolbar'
+import BottomControlBar from './bottomcontrolbar'
 
 
 class App extends Component {
     render() {
         return (
             <Container fluid>
-                <ControlBar />
+                <ControlBar id="top-bar" />
                 <Gallery />
                 <BottomControlBar />
             </Container>

@@ -7,9 +7,9 @@ function activesub(state="aww", action) {
     switch (action.type) {
         case SUBREDDIT_SELECTED : 
             return action.subreddit
+        default:
+            return state
     }
-    
-    return state
 }
 
 function subredditdata(state={
@@ -28,9 +28,9 @@ function subredditdata(state={
                         },
                     }
         }
+        default:
+            return state
     }
-
-    return state
 }
 
 const rootReducer = combineReducers({

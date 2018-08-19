@@ -7,7 +7,7 @@ const calculateTotalRows = (length, cols) => {
     if (length === 0)
         return 0
     
-    return parseInt(length / cols) + 1
+    return parseInt(length / cols, 10) + 1
 }
 
 const sanitizeForImgur = url => {
@@ -24,20 +24,20 @@ const makeImage = (url) => (
     <Image src={url} href={sanitizeForImgur(url)} target="_blank" />
 )
 
-const makeGif = (url) => {
-    // gyfcat
-    if (url.includes("gfycat"))
-        return <div><iframe src={url} frameborder='0' scrolling='no' width='900' height='720' allowfullscreen></iframe></div>
+// const makeGif = (url) => {
+//     // gyfcat
+//     if (url.includes("gfycat"))
+//         return <div><iframe src={url} frameborder='0' scrolling='no' width='900' height='720' allowfullscreen></iframe></div>
 
-    if (url.includes("imgur"))
-        return <div><blockquote class="imgur-embed-pub" lang="en"><a href={url}></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script></div>
+//     if (url.includes("imgur"))
+//         return <div><blockquote class="imgur-embed-pub" lang="en"><a href={url}></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script></div>
 
-    return url
-}
+//     return url
+// }
 
 const Gallery = ({posts, cols=3}) => {
     let pics = posts.filter(image => image.hint === "image")
-    let gifs = posts.filter(image => image.hint === "link")
+    // let gifs = posts.filter(image => image.hint === "link")
 
     let totalRows = calculateTotalRows(pics.length, cols)
     
@@ -46,12 +46,12 @@ const Gallery = ({posts, cols=3}) => {
     
     let imageItems = pics.map(image => <Grid.Column>{makeImage(image.url)}</Grid.Column>)
 
-    let imagesGrid = imageItems.reduce((rows, key, index) => (index % cols == 0 ? rows.push([key]) 
+    let imagesGrid = imageItems.reduce((rows, key, index) => (index % cols === 0 ? rows.push([key]) 
                                                                 : rows[rows.length-1].push(key)) && rows, []);
    
     let imagesRows = imagesGrid.map((row) => <Grid.Row>{row}</Grid.Row>)
     // let gifRows = gifs.map(gif => <Grid.Row>{makeGif(gif.url)}</Grid.Row>)
-    console.log(cols)
+    
     return <div className="gallery-container">
         <Container fluid>
         <Grid columns={cols} stackable>

@@ -55,7 +55,7 @@ class ControlBar extends React.Component {
                     <Form.Button fluid primary  content="submit">Fetch</Form.Button>
                 </Grid.Column>
                 <Grid.Column width={4}>
-                    <Button fluid secondary onClick={this.handleRefresh}>Refresh</Button>
+                    <Button fluid secondary type='button' onClick={this.handleRefresh}>Refresh</Button>
                 </Grid.Column>
             </Grid>
             </Form>

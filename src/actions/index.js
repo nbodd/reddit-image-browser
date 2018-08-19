@@ -15,10 +15,9 @@ export const postsReceived = (subreddit, posts) => ({
 })
 
 
-export function fetchSubredditImages(subreddit="aww") {
+export function fetchSubredditImages(subreddit="aww", refresh=false) {
     return (dispatch, getState) => {
-        
-        if (getState().subredditdata[subreddit] && 
+        if (!refresh && getState().subredditdata[subreddit] && 
                 getState().subredditdata[subreddit].posts.length !== 0)
         {
             dispatch(subredditSelected(subreddit))
@@ -31,15 +30,17 @@ export function fetchSubredditImages(subreddit="aww") {
     }
 }
 
-export function fetchAdditionalSubredditImages(subreddit) {
+export function fetchAdditionalSubredditImages() {
     return (dispatch, getState) => {
+        let subreddit = getState().activesub
         if (getState().subredditdata[subreddit])
         {
-            if (getState().subreddit[subreddit].last)
+            let subdata = getState().subredditdata[subreddit]
+            if (subdata.last)
             {
-               let lastPostId = getState().subredditdata[subreddit].last
-               let url = "https://www.reddit.com/r/" + subreddit + ".json?after=" + lastPostId
-               dispatch(fetchImages(url, subreddit))
+                let lastPostId = subdata.last
+                let url = "https://www.reddit.com/r/" + subreddit + ".json?after=" + lastPostId
+                dispatch(fetchImages(url, subreddit, subdata.posts))
             }
         }
         else
@@ -49,9 +50,8 @@ export function fetchAdditionalSubredditImages(subreddit) {
     }
 }
 
-
-export function fetchImages(url, subreddit="aww") {
-    return (dispatch, getState) => {
+export function fetchImages(url, subreddit="aww", prefixPosts=[]) {
+    return (dispatch) => {
         return fetch(url)
         .then(
             response => response.json(),
@@ -72,7 +72,9 @@ export function fetchImages(url, subreddit="aww") {
         )
         .then(image_data => {
                 dispatch(subredditSelected(subreddit))
-                dispatch(postsReceived(subreddit, image_data))
+
+                let posts = [...prefixPosts, ...image_data]
+                dispatch(postsReceived(subreddit, posts))
             }
         )
     }

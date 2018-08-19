@@ -44,25 +44,26 @@ const Gallery = ({posts, cols=3}) => {
     if (totalRows === 0)
         return <Container textAlign='center' className='gallery-container'>No Images Available</Container>
     
-    let imageItems = pics.map(image => <Grid.Row>{makeImage(image.url)}</Grid.Row>)
+    let imageItems = pics.map(image => <Grid.Column>{makeImage(image.url)}</Grid.Column>)
 
-    let imagesGrid = imageItems.reduce((cols, key, index) => (index % totalRows == 0 ? cols.push([key]) 
-                                                                : cols[cols.length-1].push(key)) && cols, []);
+    let imagesGrid = imageItems.reduce((rows, key, index) => (index % cols == 0 ? rows.push([key]) 
+                                                                : rows[rows.length-1].push(key)) && rows, []);
    
-    let imagesCols = imagesGrid.map((row) => <Grid.Column>{row}</Grid.Column>)
+    let imagesRows = imagesGrid.map((row) => <Grid.Row>{row}</Grid.Row>)
     // let gifRows = gifs.map(gif => <Grid.Row>{makeGif(gif.url)}</Grid.Row>)
-    
-    return <div class="gallery-container">
+    console.log(cols)
+    return <div className="gallery-container">
         <Container fluid>
         <Grid columns={cols} stackable>
-            {imagesCols}
+            {imagesRows}
             {/* {gifRows} */}
         </Grid>
-    </Container></div>
+    </Container>
+    </div>
 }
 
 Gallery.propTypes = {
-    posts : PropTypes.object.isRequired,
+    posts : PropTypes.array.isRequired,
     cols : PropTypes.number
 }
 

@@ -21,6 +21,7 @@ export function fetchSubredditImages(subreddit="aww") {
         if (getState().subredditdata[subreddit] && 
                 getState().subredditdata[subreddit].posts.length !== 0)
         {
+            dispatch(subredditSelected(subreddit))
             dispatch(postsReceived(subreddit, getState().subredditdata[subreddit].posts))
             return
         }

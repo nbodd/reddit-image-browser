@@ -68,7 +68,11 @@ export function fetchImages(url, subreddit="aww", prefixPosts=[]) {
             posts.filter(post => post.post_hint==="image" || post.post_hint==="link")
         )
         .then(image_posts => 
-            image_posts.map(post => ({ url : post.url, hint : post.post_hint, name : post.name, permalink : post.permalink }))
+            image_posts.map(post => ({ url : post.url,
+                                       title : post.title, 
+                                       hint : post.post_hint,
+                                       name : post.name,
+                                       permalink : post.permalink }))
         )
         .then(image_data => {
                 dispatch(subredditSelected(subreddit))

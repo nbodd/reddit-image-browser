@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Grid, Image, Container } from 'semantic-ui-react'
+import { Grid, Image, Container, Card, Icon } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 
 const calculateTotalRows = (length, cols) => {
@@ -20,8 +20,16 @@ const sanitizeForImgur = url => {
     return url
 }
 
-const makeImage = (url) => (
-    <Image src={url} href={sanitizeForImgur(url)} target="_blank" />
+const makeImage = (image) => (
+    <Card fluid>
+        <Card.Content textAlign='center'>
+            <Card.Header>{image.title}</Card.Header>
+        </Card.Content>
+        <Image src={image.url} href={sanitizeForImgur(image.url)} target="_blank" />
+        <Card.Content textAlign='center' extra>
+            <a href={"https://reddit.com" + image.permalink} target="_blank"><Icon name='reddit' size='huge'></Icon></a>
+        </Card.Content>
+    </Card>
 )
 
 // const makeGif = (url) => {
@@ -44,7 +52,9 @@ const Gallery = ({posts, cols=3}) => {
     if (totalRows === 0)
         return <Container textAlign='center' className='gallery-container'>No Images Available</Container>
     
-    let imageItems = pics.map(image => <Grid.Column>{makeImage(image.url)}</Grid.Column>)
+    let imageItems = pics.map(image => <Grid.Column>{makeImage(image)}</Grid.Column>)
+    if (imageItems.length)
+        console.log(pics[0].permalink)
 
     let imagesGrid = imageItems.reduce((rows, key, index) => (index % cols === 0 ? rows.push([key]) 
                                                                 : rows[rows.length-1].push(key)) && rows, []);

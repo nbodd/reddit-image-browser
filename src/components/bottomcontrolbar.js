@@ -1,12 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Container, Button, Header, List } from 'semantic-ui-react'
+import { Container, Button, List } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 import '../css/index.css'
 
-const BottomControlBar = ({onFetch}) => (
+import { useRedditViewer } from '../providers/RedditViewerProvider'
+
+export default function BottomControlBar(props) {
+
+    const {fetchMoreImages} = useRedditViewer();
+
+    return <>
     <Container textAlign='center' className='bottom-control-bar-container'>
-        <Button primary onClick={(e) => onFetch()}>Fetch More Images</Button>
+        <Button primary onClick={(e) => fetchMoreImages()}>Fetch More Images</Button>
         <Button secondary onClick={(e) => window.scrollTo(0, 0)}>Back To Top</Button>
         <Container text textAlign='left' className="guide-notes-container">
             <List bulleted as='ol'>
@@ -24,10 +29,5 @@ const BottomControlBar = ({onFetch}) => (
             </List>
         </Container>
     </Container>
-)
-
-BottomControlBar.propTypes = {
-    onFetch : PropTypes.func.isRequired,
+    </>
 }
-
-export default BottomControlBar

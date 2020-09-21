@@ -1,45 +1,39 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {useState} from 'react'
 import { Grid, Button, Container, Form } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 import '../css/index.css'
 
-class ControlBar extends React.Component {
+import {useRedditViewer} from '../providers/RedditViewerProvider'
 
-    constructor(props) {
-        super(props)
-        this.handleFetch.bind(this)
-        this.handleRefresh.bind(this)
-        this.handleChange.bind(this)
+export default function ControlBar(props) {
+    const {subreddit, changeSubReddit, refreshSubReddit} = useRedditViewer();
+    const [subInput, setSubInput] = useState(subreddit);
 
-        this.state = {
-            subreddit : ""
-        }
-    }
+    const handleFetch = () => {
+        let sub = subInput;
+        if (!sub) return;
 
-    handleFetch = () => {
-        let sub = this.state.subreddit
-        sub = sub.trim()
+        sub = sub.trim();       
+
         if (sub.startsWith("r/")) {
             sub = sub.replace("r/", "")
         }
 
-        this.props.onFetch(sub)
+        if (sub === "") return;
+
+        changeSubReddit(sub);
     }
 
-    handleRefresh = () => {
-        this.props.onRefresh(this.state.subreddit)
-    }
+    const handleRefresh = () => refreshSubReddit();
 
-    handleChange = (e, { name, value }) => this.setState({ [name]: value })
+    const handleInputChange = e => setSubInput(e.target.value)
 
-    render() {
-        let {subreddit} = this.state
-        return <Container className="control-bar-container">
-            <Form onSubmit={this.handleFetch}>
+    return <>
+        <Container className="control-bar-container">
+            <Form onSubmit={handleFetch}>
             <Grid stackable fluid columns={3}>
                 <Grid.Column width={8}>
-                    <Form.Input name="subreddit" value={subreddit} fluid placeholder='aww' onChange={this.handleChange} list='prefsubs'/>
+                    <Form.Input name="subreddit" value={subInput} fluid placeholder='aww' onChange={handleInputChange} list='prefsubs'/>
                     <datalist id="prefsubs">
                         <option value='aww' />
                         <option value='earthporn' />
@@ -52,20 +46,13 @@ class ControlBar extends React.Component {
                     </datalist>
                 </Grid.Column>
                 <Grid.Column width={4}>
-                    <Form.Button fluid primary  content="submit">Fetch</Form.Button>
+                    <Form.Button fluid primary  type="submit">Fetch</Form.Button>
                 </Grid.Column>
                 <Grid.Column width={4}>
-                    <Button fluid secondary type='button' onClick={this.handleRefresh}>Refresh</Button>
+                    <Button fluid secondary type='button' onClick={handleRefresh}>Refresh</Button>
                 </Grid.Column>
             </Grid>
             </Form>
         </Container>
-    }
+    </>
 }
-
-ControlBar.propTypes = {
-    onFetch : PropTypes.func.isRequired,
-    onRefresh : PropTypes.func.isRequired
-}
-
-export default ControlBar

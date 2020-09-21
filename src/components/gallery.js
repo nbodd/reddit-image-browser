@@ -1,7 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Grid, Image, Container, Card, Icon } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
+
+import {useRedditViewer} from "../providers/RedditViewerProvider"
 
 const calculateTotalRows = (length, cols) => {
     if (length === 0)
@@ -20,16 +21,18 @@ const sanitizeForImgur = url => {
     return url
 }
 
-const makeImage = (image) => (
-    <Card fluid>
-        <Card.Content textAlign='center'>
-            <Card.Header>{image.title}</Card.Header>
-        </Card.Content>
-        <Image src={image.url} href={sanitizeForImgur(image.url)} target="_blank" />
-        <Card.Content textAlign='center' extra>
-            <a href={"https://reddit.com" + image.permalink} target="_blank"><Icon name='reddit' size='huge'></Icon></a>
-        </Card.Content>
-    </Card>
+const makeImage = ({image, style={}}) => (
+    <div style={style}>
+        <Card fluid>
+            <Card.Content textAlign='center'>
+                <Card.Header>{image.title}</Card.Header>
+            </Card.Content>
+            <Image src={image.url} href={sanitizeForImgur(image.url)} target="_blank" />
+            <Card.Content textAlign='center' extra>
+                <a href={"https://reddit.com" + image.permalink} target="_blank"><Icon name='reddit' size='huge'></Icon></a>
+            </Card.Content>
+        </Card>
+    </div>
 )
 
 // const makeGif = (url) => {
@@ -43,23 +46,32 @@ const makeImage = (image) => (
 //     return url
 // }
 
-const Gallery = ({posts, cols=3}) => {
-    let pics = posts.filter(image => image.hint === "image")
-    // let gifs = posts.filter(image => image.hint === "link")
+const isImageDomain = domain => domain.includes("imgur") || domain.includes("i.redd");
 
-    let totalRows = calculateTotalRows(pics.length, cols)
-    
-    if (totalRows === 0)
+const filterImagesByDomains = (imagePosts) => {
+    return imagePosts.filter(imagePost => isImageDomain(imagePost.domain));
+}
+
+const ImagesRow = (props) => {
+    return <Grid.Row>{props.row}</Grid.Row>
+}
+
+const Gallery = ({cols=3}) => {
+    const {posts} = useRedditViewer();
+
+    let pics = filterImagesByDomains(posts);
+    if (pics.length === 0)
         return <Container textAlign='center' className='gallery-container'>No Images Available</Container>
+
+    // let totalRows = calculateTotalRows(pics.length, cols)
     
-    let imageItems = pics.map(image => <Grid.Column>{makeImage(image)}</Grid.Column>)
-    if (imageItems.length)
-        console.log(pics[0].permalink)
+    let imageItems = pics.map((image, index) => <Grid.Column key={index}>{makeImage({image})}</Grid.Column>)
 
     let imagesGrid = imageItems.reduce((rows, key, index) => (index % cols === 0 ? rows.push([key]) 
                                                                 : rows[rows.length-1].push(key)) && rows, []);
    
-    let imagesRows = imagesGrid.map((row) => <Grid.Row>{row}</Grid.Row>)
+    let imagesRows = imagesGrid.map((row, index) => <Grid.Row key={index}>{row}</Grid.Row>)
+    
     // let gifRows = gifs.map(gif => <Grid.Row>{makeGif(gif.url)}</Grid.Row>)
     
     return <div className="gallery-container">
@@ -70,11 +82,6 @@ const Gallery = ({posts, cols=3}) => {
         </Grid>
     </Container>
     </div>
-}
-
-Gallery.propTypes = {
-    posts : PropTypes.array.isRequired,
-    cols : PropTypes.number
 }
 
 export default Gallery

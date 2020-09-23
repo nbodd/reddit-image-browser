@@ -10,7 +10,7 @@ const fetchImagesHelper = (url, fetchSuccessCb) => {
 
 
 export function fetchImages(subreddit="aww", cb = f => f) {
-    let url = "https://www.reddit.com/r/" + subreddit + ".json";
+    let url = "https://www.reddit.com/r/" + subreddit + ".json?limit=50";
     fetchImagesHelper(url, cb);
 }
 
@@ -22,4 +22,9 @@ export function fetchAdditionalSubredditImages(subreddit = "aww", cb = f => f, l
     }
 
     fetchImages(subreddit, cb);
+}
+
+export function fetchUserImagePosts(user, fetchSuccessCb = f => f) {
+    let url = 'https://www.reddit.com/user/' + user + '.json?limit=100';
+    fetchImagesHelper(url, fetchSuccessCb);
 }

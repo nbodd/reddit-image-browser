@@ -24,12 +24,15 @@ export default function RedditViewerProvider({children}) {
 
     const getImagePosts = () => actions.fetchImages(subReddit, replacePosts);
 
+    const fetchUserImagePosts = (user) => actions.fetchUserImagePosts(user, replacePosts);
+
     const providerValues = {
         subReddit,
         posts,
         changeSubReddit : (newSubReddit = "aww") => setSubReddit(newSubReddit),
         refreshSubReddit : getImagePosts,
         fetchMoreImages : () => actions.fetchAdditionalSubredditImages(subReddit, appendPosts, lastPost),
+        fetchUserImagePosts,
     }
 
     useEffect(getImagePosts, [subReddit]);

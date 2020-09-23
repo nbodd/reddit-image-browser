@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Image, Container, Card, Icon } from 'semantic-ui-react'
+import { Grid, Image, Container, Card, Icon, Button } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css';
 
 import {useRedditViewer} from "../providers/RedditViewerProvider"
@@ -20,20 +20,6 @@ const sanitizeForImgur = url => {
     
     return url
 }
-
-const makeImage = ({image, style={}}) => (
-    <div style={style}>
-        <Card fluid>
-            <Card.Content textAlign='center'>
-                <Card.Header>{image.title}</Card.Header>
-            </Card.Content>
-            <Image src={image.url} href={sanitizeForImgur(image.url)} target="_blank" />
-            <Card.Content textAlign='center' extra>
-                <a href={"https://reddit.com" + image.permalink} target="_blank"><Icon name='reddit' size='huge'></Icon></a>
-            </Card.Content>
-        </Card>
-    </div>
-)
 
 // const makeGif = (url) => {
 //     // gyfcat
@@ -57,7 +43,34 @@ const ImagesRow = (props) => {
 }
 
 const Gallery = ({cols=3}) => {
-    const {posts} = useRedditViewer();
+    const {posts, fetchUserImagePosts} = useRedditViewer();
+
+    const makeImage = ({image, style={}}) => (
+        <div style={style}>
+            <Card fluid>
+                <Card.Content textAlign='center'>
+                    <Card.Header>
+                        {image.title}&nbsp;&nbsp;&nbsp;
+                        <a href={"https://reddit.com" + image.permalink} target="_blank" title='View On Reddit'>
+                            <Icon name='reddit' size='big' color='red'></Icon>
+                        </a>
+                    </Card.Header>
+                </Card.Content>
+                <Image src={image.url} href={sanitizeForImgur(image.url)} target="_blank" />
+                <Card.Content textAlign='center' extra>
+                    <Card.Header title='View Posts By User'>
+                        <Button content={image.author}
+                                icon='history'
+                                color='teal'
+                                size='big' 
+                                onClick={e => fetchUserImagePosts(image.author)}
+                                labelPosition='right' />
+                    </Card.Header>
+                </Card.Content>
+            </Card>
+        </div>
+    )
+    
 
     let pics = filterImagesByDomains(posts);
     if (pics.length === 0)
